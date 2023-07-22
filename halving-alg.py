@@ -45,7 +45,7 @@ def hedge_algorithm(player_list, player_dict, max_values, T):
 		alg_loss += updated_loss
 		loss = [0] * n
 		loss[selected_i] = updated_loss
-		weights = update_weights(weights, epsilon, loss, 55)
+		weights = update_weights(weights, epsilon, loss, 40)
 		
 	return alg_loss, predictions_made, weights
 
