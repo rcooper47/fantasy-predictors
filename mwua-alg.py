@@ -88,4 +88,55 @@ def incur_loss(loss, max_value, actual_value):
 """
 TEST BASED ON MATHEMATICAL GUARANTEES & FANTASY FOOTBALL KNOWLEDGE
 """
+
+
+def lineup_builder(rostered_players, lineup_rules):
+	"""
+	[{name: '', position: '', [points_i]}]
+	Input: List of All players on roster, Lineup Rules
+	Position, Weekly Points, Max Points Possible
+
+	{QB: 1, RB: 3,...}
+	Output: All unique lineups?
+	[Lineup A, Lineup B], [200,130], [["mahomes", "kelce"],["justin jefferson","josh allen"]]
+	"""
+	"""
+	import itertools
+
+	for comb in itertools.combinations([1, 2, 3, 4], 3):
+    	print(comb)
+
+    for comb in itertools.combinations(["jettas", "davante", "cooper", "tyreek"], 3 (wrs in lineup):
+    	print(comb)
+    	add comb to lineup. do this for each position based on rules
+    	for flex, add if flex eligible and not present in lineup
+	"""
+	qbs, rbs, wrs, tes = positional_sorter(rostered_players)
+	
+
+
+
+
+
+
+def positional_sorter(rostered_players):
+	#add players to positional list
+	qbs = []
+	rbs = []
+	wrs = []
+	tes = []
+	flex = []
+	kicker = []
+	for player in rostered_players:
+		if player["position"] == "QB":
+			qbs.append(player["name"])
+		if player["position"] == "RB":
+			rbs.append(player["name"])
+		if player["position"] == "WR":
+			wrs.append(player["name"])
+		if player["position"] == "TE":
+			tes.append(player["name"])
+	return qbs, rbs, wrs, tes
+
+
 print(hedge_algorithm(player_list, player_dict, max_values, 6))
