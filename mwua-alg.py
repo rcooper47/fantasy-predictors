@@ -24,6 +24,15 @@ player_dict = {
 max_values = [34.9, 29.68, 26.7, 23.52, 35.16, 26.36]
 
 def hedge_algorithm(player_list, player_dict, max_values, T):
+	"""
+	Inputs: player_list: list<Player Names>, 
+	player_dict: dict{Player Name:list<Scores>}, 
+	max_values: list<Scores>, T: # rounds
+
+	Outputs: alg_loss: (Float) Loss of Alogirithm, 
+	predictions_made: list<Predicted Names>, 
+	weights: list<Predictor Weights>
+	"""
 	n = len(player_list)
 	weights = [1] * n
 	loss = [0] * n
@@ -50,18 +59,30 @@ def hedge_algorithm(player_list, player_dict, max_values, T):
 	return alg_loss, predictions_made, weights
 
 def pick_randomly(player_list, weights):
+	"""
+	Output: Name of player chosen, Index of player chosen
+	"""
 	sum_of_weights = sum(weights)
 	probabilities = [weight_i / sum_of_weights for weight_i in weights]
 	choice = random.choices(player_list, weights = probabilities, k=1)
 	return choice[0], player_list.index(choice[0])
 
 def update_weights(weights, epsilon, loss, L):
+	"""
+	Output: Weights updated according to Formula
+	"""
 	weights = [weights[weight_i]*(1-(epsilon*loss[weight_i])/L) for weight_i in range(len(weights))]
 	return weights
 
 def incur_loss(loss, max_value, actual_value):
+	"""
+	Output: Loss incurred from choosing Choice
+	TODO: UPDATE LOSS FUNC, UPDATE CUMULATIVE LOSS, L
+	"""
 	return  (1 * actual_value) - max_value
 
 
-
+"""
+TEST BASED ON MATHEMATICAL GUARANTEES & FANTASY FOOTBALL KNOWLEDGE
+"""
 print(hedge_algorithm(player_list, player_dict, max_values, 6))
