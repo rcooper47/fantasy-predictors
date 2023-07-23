@@ -111,8 +111,14 @@ def lineup_builder(rostered_players, lineup_rules):
     	add comb to lineup. do this for each position based on rules
     	for flex, add if flex eligible and not present in lineup
 	"""
-	qbs, rbs, wrs, tes = positional_sorter(rostered_players)
-	
+	qbs, rbs, wrs, tes, flex, kicker = positional_sorter(rostered_players)
+	qb_combos = combination_maker(rostered_players, lineup_rules["QB"])
+	rb_combos = combination_maker(rostered_players, lineup_rules["RB"])
+	wr_combos = combination_maker(rostered_players, lineup_rules["WR"])
+	te_combos = combination_maker(rostered_players, lineup_rules["TE"])
+	flex_combos = combination_maker(rostered_players, lineup_rules["FLEX"])
+	kicker_combos = combination_maker(rostered_players, lineup_rules["K"])
+
 
 
 
@@ -136,7 +142,15 @@ def positional_sorter(rostered_players):
 			wrs.append(player["name"])
 		if player["position"] == "TE":
 			tes.append(player["name"])
-	return qbs, rbs, wrs, tes
+		if player["position"] == "FLEX":
+			flex.append(player["name"])
+		if player["position"] == "K":
+			kicker.append(player["name"])
+	return qbs, rbs, wrs, tes, flex, kicker
+
+def combination_maker(input_list, count):
+
+	return
 
 
 print(hedge_algorithm(player_list, player_dict, max_values, 6))
