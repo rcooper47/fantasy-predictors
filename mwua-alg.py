@@ -9,7 +9,10 @@ Fantasy Points.
 It chooses randomly in first week & then eliminates gradually after...But this is only good
 for binary prediction
 
-new loss value each round
+Later Version: 
+- Graphs
+- Comparison Across Algorithms
+- Option to Make Roster Predictions (built of players)
 """
 import numpy as np
 import random
