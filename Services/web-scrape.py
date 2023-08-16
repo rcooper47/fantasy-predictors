@@ -1,17 +1,20 @@
-import selenium
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-import time
+import requests 
+from bs4 import BeautifulSoup
+import nfl_data_py as nfl
 
-URL = "https://fantasydata.com/nfl/fantasy-football-leaders?position=1&season=2022&seasontype=1&scope=2&subscope=1&startweek=1&endweek=1&aggregatescope=1&range=1"
+URL = "https://api.sportsdata.io/api/nfl/fantasy/json/Standings/2022REG"
+page = requests.get(URL)
 
+#soup = BeautifulSoup(page.content, "html.parser")
+#class_name = "k-grid k-widget k-display-block k-grid-lockedcolumns"
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-driver.get(URL)
+#results = soup.find("div", class_="k-grid k-widget k-display-block k-grid-lockedcolumns")
 
+#driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+#driver.get(URL)
+#players = driver.find_elements_by_xpath('//td[@class="k-grid k-widget k-display-block k-grid-lockedcolumns"]')
+#content = driver.find_element(By.CLASS_NAME, class_name)
+stats = nfl.import_weekly_data([2022,2021])
+
+print(stats)
 
