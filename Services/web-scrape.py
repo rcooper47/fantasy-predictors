@@ -14,6 +14,9 @@ head.to_excel('output.xlsx', index=False)
 
 ### Combine fumbles lost columns
 def fumble_combiner(df):
-    df["fumbles_lost"] = df["sack_fumbles_lost"] + df["rushing_fumbles_lost"] +df["receiving_fumbles_lost"]
+    df["fumbles_lost"] = df["sack_fumbles_lost"] + df["rushing_fumbles_lost"] + df["receiving_fumbles_lost"]
     return df
+def reg_season_combiner(df):
+    regseason = stats[stats['season_type']== "REG"]
+    return regseason
 ### Write tests
