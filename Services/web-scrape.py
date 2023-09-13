@@ -4,6 +4,7 @@ import river
 import gymnasium as gym
 import itertools
 import regex as re
+import random
 
 # [id, name, week, f-score, stat1, stat2, avg-pts-agst,..., ]
 
@@ -81,19 +82,60 @@ Will have to search using our shit to get pos & pointArray
 
 """
 
-def validation_tester():
-    return bool(re.search("qb{1}","qb"))
-
-def remove_invalid_combos(all_combos):
+def validation_tester(input_str):
+    # pass al tests return true, else return false
+    qbs = re.findall("qb", input_str)
+    rbs = re.findall("rb", input_str)
+    wrs = re.findall("wr", input_str)
+    tes = re.findall("te", input_str)
+    if len(qbs) == 1:
+        pass
+    else:
+        return False
+    
+    if len(rbs) >= 2 and len(rbs) <= 4:
+        pass
+    else:
+        return False
+    if len(wrs) >= 2 and len(wrs) <= 4:
+        pass
+    else:
+        return False
+    if len(tes) >= 1 and len(tes) <= 3:
+        pass
+    else:
+        return False
+    
+    return True
+    
+# print(validation_tester("qb"*1+"wr"*3+"rb"*2+"te"))  
+    #return bool(re.search("^(?!.*\bqb\b.*\bqb\b).*\bqb\b.*$","qbqb"))
+## build output dict & give lineups id
+## retrieve scores from dataframe & put into output dict
+def remove_invalid_combos(all_combos, df):
     # if is flex modifier then can be flex or their pos
     valid_lineups = []
     for tup in all_combos:
         validation_str = ""
         for player in tup:
-            validation_str += player["position"]
-        if validation_tester(validation_str) == 1:
+            position = df.loc[df['player_display_name'] == player]['position'].iloc[0]
+            validation_str += position
+        print(validation_str)
+        if validation_tester(validation_str) == True:
             valid_lineups.append(tup)
     return valid_lineups
+def create_output_dict(valid_lineups, df):
+    """Build dictionary of team combos
+
+{
+teamId: 1
+playerArray: ["ryan", "zhane", ..."name"...] players to play that week
+scoreArray: Weekly scores [100, 99, 120] players' summed scores for each week
+rewards: [0,0,0,1] possibly
+}"""
+    output_dict = {idNum: lineup for idNum, lineup in enumerate(valid_lineups)}
+    #scores_dict = {idNum: player['fantasy_points'] for idNum, lineup in enumerate(valid_lineups) for player in lineup}
+    return output_dict
 
 def get_skill_pos(df):
     qbs = df[df['position'] == 'QB']
@@ -108,7 +150,7 @@ def get_all_names(df):
 
 def build_all_combos(player_names):
     """make all combos"""
-    all_possible_combos = itertools.combinations(player_names, 7)
+    all_possible_combos = itertools.combinations(player_names, 8)
     return list(all_possible_combos)
 
 
@@ -121,12 +163,18 @@ def main(df):
     df = fumble_combiner(df)
     df = reg_season_combiner(df)
     all_names = get_all_names(df)
-    all_combos = build_all_combos(all_names)
-    return len(all_combos)
+    name_list = random.choices(list(all_names), k=30)
+    all_combos = build_all_combos(name_list)
+    print(all_combos[:30])
+    valid_lineups = remove_invalid_combos(all_combos[:11], df)
+    print(valid_lineups)
+    return create_output_dict(valid_lineups, df)
+df = nfl.import_weekly_data([2020])
+
+print(main(df))
 # Option 1: Allow for all players
 # Option 2: Allow for only 1 roster worth of players -> 
 #print(nfl.import_weekly_data([2022]).position.unique())
 #print(main(nfl.import_weekly_data([2022])))
 #print(player_searcher(stats, "Tom Brady"))
 ### Write tests
-print(validation_tester())
